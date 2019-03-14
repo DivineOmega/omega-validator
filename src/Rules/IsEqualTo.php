@@ -6,8 +6,8 @@ use DivineOmega\OmegaValidator\Interfaces\Rule;
 
 class IsEqualTo implements Rule
 {
-    private $valueToCompare;
-    private $strict;
+    protected $valueToCompare;
+    protected $strict;
 
     public function __construct($valueToCompare, $strict = true)
     {

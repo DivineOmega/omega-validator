@@ -6,8 +6,8 @@ use DivineOmega\OmegaValidator\Interfaces\Rule;
 
 class IsOneOf implements Rule
 {
-    private $valuesToCompare;
-    private $strict;
+    protected $valuesToCompare;
+    protected $strict;
 
     public function __construct(array $valuesToCompare, $strict = true)
     {
