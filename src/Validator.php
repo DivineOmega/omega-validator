@@ -16,10 +16,10 @@ class Validator
         $this->data = $data;
         $this->ruleSets = $ruleSets;
 
-        $this->validateRules();
+        $this->validateRuleSets();
     }
 
-    private function validateRules()
+    private function validateRuleSets()
     {
         foreach($this->ruleSets as $rules) {
             foreach ($rules as $rule) {
@@ -34,6 +34,8 @@ class Validator
     {
         foreach($this->ruleSets as $key => $rules) {
             $value = array_key_exists($key, $this->data) ? $this->data[$key] : null;
+
+            /** @var Rule $rule */
             foreach ($rules as $rule) {
                 if (!$rule->passes($key, $value)) {
                     return false;
@@ -50,22 +52,27 @@ class Validator
 
         foreach($this->ruleSets as $key => $rules) {
             $value = array_key_exists($key, $this->data) ? $this->data[$key] : null;
+
+            /** @var Rule $rule */
             foreach ($rules as $rule) {
-                if (!$rule->passes($key, $value)) {
-                    if (!array_key_exists($key, $messages)) {
-                        $messages[$key] = [];
-                    }
-                    $messages[$key][get_class($rule)] = $this->formatMessage($rule->message(), $key, $value);
+                if ($rule->passes($key, $value)) {
+                    continue;
                 }
+
+                if (!array_key_exists($key, $messages)) {
+                    $messages[$key] = [];
+                }
+
+                $messages[$key][get_class($rule)] = $this->message($rule, $key, $value);
             }
         }
 
         return $messages;
     }
 
-    private function formatMessage($message, $key, $value)
+    private function message(Rule $rule, string $key, $value)
     {
-        return str_replace([':key', ':value'], [$key, $value], $message);
+        return str_replace([':key', ':value'], [$key, $value], $rule->message());
     }
 
 }
