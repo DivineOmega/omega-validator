@@ -46,6 +46,11 @@ class Validator
         return true;
     }
 
+    public function fails()
+    {
+        return !$this->passes();
+    }
+
     public function messages()
     {
         $messages = [];

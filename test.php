@@ -12,6 +12,6 @@ $validator = new Validator([
     'email' => [new Required(), new Email()],
 ]);
 
-if (!$validator->passes()) {
+if ($validator->fails()) {
     var_dump($validator->messages());
 }
