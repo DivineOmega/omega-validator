@@ -1,1 +1,1 @@
-# omega-validator
+# Omega Validator
