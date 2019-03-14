@@ -4,7 +4,7 @@ namespace DivineOmega\OmegaValidator\Rules;
 
 use DivineOmega\OmegaValidator\Interfaces\Rule;
 
-class Email implements Rule
+class IsEmail implements Rule
 {
     public function passes(string $key, $value): bool
     {
