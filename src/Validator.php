@@ -88,7 +88,7 @@ class Validator
     {
         $message = $this->translator->translate($rule->message());
 
-        return str_replace([':key', ':value'], [$key, $value], $message);
+        return ucfirst(str_replace([':key', ':value'], [$key, $value], $message));
     }
 
 }
