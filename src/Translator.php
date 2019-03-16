@@ -44,7 +44,8 @@ class Translator
     public function translate($string)
     {
         if (array_key_exists($string, $this->data)) {
-            return $this->data[$string];
+            $translated = $this->data[$string];
+            return $translated ? $translated : $string;
         }
 
         return $string;
