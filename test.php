@@ -15,7 +15,7 @@ $validator = new Validator([
         new IsEmail(),
         new IsString(),
     ],
-]);
+], 'de');
 
 if ($validator->fails()) {
     var_dump($validator->messages());
