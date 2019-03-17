@@ -2,6 +2,7 @@
 
 namespace DivineOmega\OmegaValidator;
 
+use DivineOmega\OmegaValidator\Exceptions\TranslationDataFileNotFoundException;
 use DivineOmega\OmegaValidator\Exceptions\UnableToLoadTranslationDataException;
 
 class Translator
@@ -13,6 +14,7 @@ class Translator
      * Translator constructor.
      * @param string $language
      * @throws UnableToLoadTranslationDataException
+     * @throws TranslationDataFileNotFoundException
      */
     public function __construct(string $language = null)
     {
@@ -25,10 +27,15 @@ class Translator
 
     /**
      * @throws UnableToLoadTranslationDataException
+     * @throws TranslationDataFileNotFoundException
      */
     private function loadTranslationData()
     {
         $file = __DIR__.'/../resources/lang/'.basename($this->language).'.json';
+
+        if (!file_exists($file)) {
+            throw new TranslationDataFileNotFoundException($file);
+        }
 
         $this->data = json_decode(file_get_contents($file), true);
 
