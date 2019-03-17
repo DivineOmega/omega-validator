@@ -7,21 +7,24 @@ use DivineOmega\OmegaValidator\Exceptions\UnableToLoadTranslationDataException;
 
 class Translator
 {
-    private $language;
     private $data = [];
 
     /**
      * Translator constructor.
      * @param string $language
-     * @throws UnableToLoadTranslationDataException
      * @throws TranslationDataFileNotFoundException
+     * @throws UnableToLoadTranslationDataException
      */
     public function __construct(string $language = null)
     {
-        $this->language = $language;
+        if (!$language) {
+            return;
+        }
 
-        if ($language) {
-            $this->loadTranslationData();
+        $file = __DIR__.'/../resources/lang/'.basename($language).'.json';
+
+        if (file_exists($file)) {
+            $this->loadTranslationData($file);
         }
     }
 
@@ -29,19 +32,19 @@ class Translator
      * @throws UnableToLoadTranslationDataException
      * @throws TranslationDataFileNotFoundException
      */
-    private function loadTranslationData()
+    public function loadTranslationData(string $file)
     {
-        $file = __DIR__.'/../resources/lang/'.basename($this->language).'.json';
-
         if (!file_exists($file)) {
             throw new TranslationDataFileNotFoundException($file);
         }
 
-        $this->data = json_decode(file_get_contents($file), true);
+        $data = json_decode(file_get_contents($file), true);
 
-        if ($this->data === null) {
+        if ($data === null) {
             throw new UnableToLoadTranslationDataException($file);
         }
+
+        $this->data = array_merge($this->data, $data);
     }
 
     /**
