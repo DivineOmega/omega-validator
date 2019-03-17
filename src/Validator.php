@@ -8,7 +8,6 @@ use DivineOmega\OmegaValidator\Interfaces\Rule;
 
 class Validator
 {
-    private $translator;
     private $data;
     private $ruleSets;
 
@@ -16,12 +15,9 @@ class Validator
      * Validator constructor.
      * @param array $data
      * @param array $ruleSets
-     * @param string $language
-     * @throws Exceptions\UnableToLoadTranslationDataException
      */
-    public function __construct(array $data, array $ruleSets, $language = null)
+    public function __construct(array $data, array $ruleSets)
     {
-        $this->translator = new Translator($language);
         $this->data = $data;
         $this->ruleSets = $ruleSets;
 
@@ -60,7 +56,7 @@ class Validator
         return !$this->passes();
     }
 
-    public function messages()
+    public function messages(Translator $translator = null)
     {
         $messages = [];
 
@@ -77,16 +73,20 @@ class Validator
                     $messages[$key] = [];
                 }
 
-                $messages[$key][get_class($rule)] = $this->message($rule, $key, $value);
+                $messages[$key][get_class($rule)] = $this->message($rule, $key, $value, $translator);
             }
         }
 
         return $messages;
     }
 
-    private function message(Rule $rule, string $key, $value)
+    private function message(Rule $rule, string $key, $value, Translator $translator = null)
     {
-        $message = $this->translator->translate($rule->message());
+        $message = $rule->message();
+
+        if ($translator) {
+            $message = $translator->translate($message);
+        }
 
         return ucfirst(str_replace([':key', ':value'], [$key, $value], $message));
     }

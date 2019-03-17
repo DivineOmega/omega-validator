@@ -21,7 +21,7 @@ use DivineOmega\OmegaValidator\Validator;
 /* ... */
 
 $validator = new Validator([
-    'email' => 'test@example.com',
+    'email' => '',
 ], [
     'email' => [
         new Required(),
