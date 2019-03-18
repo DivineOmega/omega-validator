@@ -5,7 +5,7 @@ namespace DivineOmega\OmegaValidator;
 use DivineOmega\OmegaValidator\Exceptions\TranslationDataFileNotFoundException;
 use DivineOmega\OmegaValidator\Exceptions\UnableToLoadTranslationDataException;
 
-abstract class AbstractTranslator
+class BaseTranslator
 {
     private $data = [];
 
