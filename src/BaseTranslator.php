@@ -9,11 +9,6 @@ class BaseTranslator
 {
     private $data = [];
 
-    public function getDefaultLanguageDirectory()
-    {
-        return __DIR__.'/../../../../resources/lang/';
-    }
-
     /**
      * Translator constructor.
      * @param string $language
@@ -31,6 +26,14 @@ class BaseTranslator
         if (file_exists($file)) {
             $this->loadTranslationData($file);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultLanguageDirectory()
+    {
+        return __DIR__.'/../../../../resources/lang/';
     }
 
     /**
